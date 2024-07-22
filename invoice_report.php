@@ -6,9 +6,10 @@ $start_date = $_POST['start_date'] ?? '';
 $end_date = $_POST['end_date'] ?? '';
 
 // Construct SQL query with date range filtering
-$sql = "SELECT i.invoice_no, i.date, c.first_name, c.last_name, c.district, i.item_count, i.amount 
+$sql = "SELECT i.invoice_no, i.date, c.first_name, c.last_name, d.district AS district, i.item_count, i.amount 
         FROM invoice i
         JOIN customer c ON i.customer = c.id
+        JOIN district d ON c.district = d.id
         WHERE (i.date >= ? OR ? = '') 
         AND (i.date <= ? OR ? = '')";
 

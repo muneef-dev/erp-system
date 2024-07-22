@@ -5,11 +5,13 @@ include 'config.php';
 $start_date = $_POST['start_date'] ?? '';
 $end_date = $_POST['end_date'] ?? '';
 
-$sql = "SELECT i.invoice_no, i.date AS invoiced_date, c.first_name, c.last_name, it.item_name, it.item_code, it.item_category, im.unit_price
+// SQL Query to join item with category to fetch category names
+$sql = "SELECT i.invoice_no, i.date AS date, c.first_name, c.last_name, it.item_name, it.item_code, ct.category AS category, im.unit_price
         FROM invoice i
         JOIN customer c ON i.customer = c.id
         JOIN invoice_master im ON i.invoice_no = im.invoice_no
         JOIN item it ON im.item_id = it.id
+        JOIN item_category ct ON it.id = ct.id
         WHERE (i.date >= ? OR ? = '') 
         AND (i.date <= ? OR ? = '')
         ORDER BY i.date";
@@ -23,11 +25,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td>" . htmlspecialchars($row['invoice_no']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['invoiced_date']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['date']) . "</td>";
         echo "<td>" . htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['item_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['item_code']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['item_category']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['category']) . "</td>";
         echo "<td>" . htmlspecialchars($row['unit_price']) . "</td>";
         echo "</tr>";
     }
