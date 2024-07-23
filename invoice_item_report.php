@@ -48,7 +48,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             <form id="search-form">
                 <input type="date" name="start_date" id="start-date" placeholder="Start Date" class="date-field" required>
                 <input type="date" name="end_date" id="end-date" placeholder="End Date" class="date-field" required>
-                <button type="button" onclick="searchInvoiceItemReport()">Search</button>
+                <button type="button" onclick="sendAjaxRequest('invoice_item_report.php', getInvoiceParams(),'invoice-table')">Search</button>
             </form>
         </div>
         <table id="invoice-table">

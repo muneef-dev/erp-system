@@ -51,7 +51,7 @@ while ($row = $district_result->fetch_assoc()) {
             <form id="search-form">
                 <input type="date" name="start_date" id="start-date" placeholder="Start Date" class="date-field">
                 <input type="date" name="end_date" id="end-date" placeholder="End Date" class="date-field">
-                <button type="button" onclick="searchInvoices()">Search</button>
+                <button type="button" onclick="sendAjaxRequest('invoice_report.php', getInvoiceParams(),'invoice-table')">Search</button>
             </form>
         </div>
         <table id="invoice-table">

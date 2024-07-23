@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadContent(page) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', page + '.php', true);
+    var phpPage = page + '.php';
+    xhr.open('GET', phpPage, true);
     xhr.onload = function() {
         document.getElementById('main-content').innerHTML = this.responseText;
         if (page === 'customer') {
@@ -26,82 +27,40 @@ function loadContent(page) {
             initItemFunctions();
             loadTableData('item');
         } else if (page === 'invoice_report') {
-            initInvoiceReportFunctions();
+            sendAjaxRequest(phpPage, getInvoiceParams(),'invoice-table');
         } else if (page === 'invoice_item_report') {
-            initInvoiceItemReportFunctions();
+            sendAjaxRequest(phpPage, getInvoiceParams(),'invoice-table');
         } else if (page === 'item_report') {
-            initItemReportFunctions();
+            sendAjaxRequest(phpPage, getItemParams(),'item-table');
         }
     };
     xhr.send();
 }
 
-function initInvoiceReportFunctions() {
-    document.getElementById('search-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        searchInvoices();
-    });
-}
 
-function searchInvoices() {
-    var startDate = document.getElementById('start-date').value;
-    var endDate = document.getElementById('end-date').value;
+function sendAjaxRequest(url, params, tableId) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'invoice_report.php', true);
+    xhr.open('POST', url, true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
-        const tableBody = document.querySelector('#invoice-table tbody');
+        const tableBody = document.querySelector(`#${tableId} tbody`);
         if (tableBody) {
             tableBody.innerHTML = this.responseText;
         }
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.send('start_date=' + encodeURIComponent(startDate) + '&end_date=' + encodeURIComponent(endDate));
+    xhr.send(params);
 }
 
-function initInvoiceItemReportFunctions() {
-    document.getElementById('search-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        searchInvoiceItemReport();
-    });
-}
-
-function searchInvoiceItemReport() {
+function getInvoiceParams() {
     var startDate = document.getElementById('start-date').value;
     var endDate = document.getElementById('end-date').value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'invoice_item_report.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        const tableBody = document.querySelector('#invoice-table tbody');
-        if (tableBody) {
-            tableBody.innerHTML = this.responseText;
-        }
-    };
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.send('start_date=' + encodeURIComponent(startDate) + '&end_date=' + encodeURIComponent(endDate));
+    return 'start_date=' + encodeURIComponent(startDate) + '&end_date=' + encodeURIComponent(endDate);
 }
 
-function initItemReportFunctions() {
-    document.getElementById('search-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        searchItemReport();
-    });
-}
-
-function searchItemReport() {
+function getItemParams() {
     var search = document.getElementById('search-bar').value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'item_report.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        const tableBody = document.querySelector('#item-table tbody');
-        if (tableBody) {
-            tableBody.innerHTML = this.responseText;
-        }
-    };
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.send('search=' + encodeURIComponent(search));
+    return 'search=' + encodeURIComponent(search);
 }
 
 

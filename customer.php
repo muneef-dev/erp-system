@@ -119,7 +119,7 @@ while ($row = $district_result->fetch_assoc()) {
             <h1>Customer Management</h1>
             <form id="search-form">
                 <input type="search" name="search" id="search-bar" placeholder="Search" value="<?= escape($search) ?>">
-                <button type="button" onclick="searchCustomers()">Search</button>
+                <button type="button" onclick="loadTableData('customer')">Search</button>
                 <button type="button" onclick="toggleForm()" id="addNewBtn"><i class="lni lni-plus"></i> Add New</button>
             </form>
         </div>

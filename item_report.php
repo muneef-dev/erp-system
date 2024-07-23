@@ -17,22 +17,36 @@ if ($search) {
               OR s.sub_category LIKE '%$search%'";
 }
 
+// method 2
+// $sql = $search ? "SELECT i.item_name, c.category AS item_category, s.sub_category AS item_subcategory, i.quantity 
+//         FROM item i
+//         JOIN item_category c ON i.item_category = c.id
+//         JOIN item_subcategory s ON i.item_subcategory = s.id
+//         WHERE i.item_name LIKE '%$search%' 
+//               OR c.category LIKE '%$search%' 
+//               OR s.sub_category LIKE '%$search%'"
+//     : "SELECT i.item_name, c.category AS item_category, s.sub_category AS item_subcategory, i.quantity 
+//         FROM item i
+//         JOIN item_category c ON i.item_category = c.id
+//         JOIN item_subcategory s ON i.item_subcategory = s.id";
+
+
 // Execute the query
-$result = $con->query($sql);
 
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['item_name']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['item_category']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['item_subcategory']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "Error: " . $con->error;
+    // if ($result) {
+    $result = $con->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['item_name']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['item_category']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['item_subcategory']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
+        echo "</tr>";
     }
+    // } else {
+    //     echo "Error: " . $con->error;
+    // }
     $con->close();
     exit;
 }
@@ -44,7 +58,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             <h1>Item Report</h1>
             <form id="search-form">
                 <input type="search" name="search" id="search-bar" placeholder="Search" value="<?= htmlspecialchars($search) ?>">
-                <button type="button" onclick="searchItemReport()">Search</button>
+                <button type="button" onclick="sendAjaxRequest('item_report.php', getItemParams(),'item-table')">Search</button>
             </form>
         </div>
         <table id="item-table">

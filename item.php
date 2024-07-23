@@ -108,7 +108,7 @@ while ($row = $item_subcategory_result->fetch_assoc()) {
             <h1>Item Management</h1>
             <form id="search-form">
                 <input type="search" name="search" id="search-bar" placeholder="Search" value="<?= htmlspecialchars($search) ?>">
-                <button type="button" onclick="searchItems()">Search</button>
+                <button type="button" onclick="loadTableData('item')">Search</button>
                 <button type="button" onclick="toggleForm()"><i class="lni lni-plus"></i> Add New</button>
             </form>
         </div>
