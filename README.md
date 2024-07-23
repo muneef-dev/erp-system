@@ -2,6 +2,10 @@
 
 This ERP system project is designed using HTML, CSS, JavaScript, PHP, and MySQL. It provides functionalities for managing customers, items, and generating various reports. The system includes features for inserting, updating, deleting, and searching data efficiently.
 
+## Links
+- **The source code and database files** - https://github.com/muneef-dev/erp-system
+- **A video demonstrating the system** - https://drive.google.com/file/d/1DYOSaPuoIOgMNNssvpMprIN-TKbGAIx7/view?usp=sharing
+
 ## Table of Contents
 
 1. [Assumptions](#assumptions)
